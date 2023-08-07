@@ -1,0 +1,40 @@
+{
+    "patterns": [
+        {
+            "label": "email",
+            "pattern": "(?:(?i)\\b[a-z0-9._%\\+\\-—|]+@[a-z0-9.\\-—|]+\\.[a-z|]{2,6}\\b)"
+        },
+        {
+            "label": "credit_card",
+            "pattern": "(?:((4\\d{3}|5[1-5]\\d{2}|2\\d{3}|3[47]\\d{1,2})[\\s\\-]?\\d{4,6}[\\s\\-]?\\d{4,6}?([\\s\\-]\\d{3,4})?(\\d{3})?))"
+        },
+        {
+            "label": "ipv4_address",
+            "pattern": "(?:\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b)"
+        },
+        {
+            "label": "phone_number_or_fax",
+            "pattern": "(?:((\\+|\\b)[1l][\\-\\. ])?\\(?\\b[\\dOlZSB]{3,5}([\\-\\. ]|\\) ?)[\\dOlZSB]{3}[\\-\\. ][\\dOlZSB]{4})"
+        },
+        {
+            "label": "us_passport",
+            "pattern": "(?:\\b(?:\\d|[A-Z])\\d{8}\\b)"
+        },
+        {
+            "label": "indian_passport",
+            "pattern": "(?:\\b[A-PR-WY][1-9]\\d\\s?\\d{4}[1-9]\\b)"
+        },
+        {
+            "label": "aadhar_in",
+            "pattern": "(?:\\b\\d{4}\\s?\\d{4}\\s?\\d{4}\\b)"
+        },
+        {
+            "label": "pan_in",
+            "pattern": "(?:\\b[A-Za-z]{3}[cphfatbljCPHFATBLJ][A-Za-z]\\d{4}[A-Za-z]\\b)"
+        },
+        {
+            "label": "us_zip_code",
+            "pattern": "(?:\\b\\d{5}(?:[-\\s]\\d{4})?\\b)"
+        }
+    ]
+}
