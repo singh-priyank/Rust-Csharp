@@ -9,13 +9,23 @@
 
 use std::fs::File;
 use std::io::Read;
+use flate2::read::GzDecoder;
 
-fn main() -> std::io::Result<()> {
-  let mut file = File::open("C:\\Users\\PriyankSingh\\Neural-Networks-and-Deep-Learning\\data\\mnist.pkl.gz")?;
+pub fn load_data() -> Result<(), serde_pickle::Error> {
+  // Open the gzipped MNIST data file
+  let file = File::open("C:\\Users\\PriyankSingh\\Neural-Networks-and-Deep-Learning\\data\\mnist.pkl.gz")?;
+  let mut decoder = GzDecoder::new(file); // Wrap the file stream with GzDecoder
+
+  // Read the entire decompressed content into a vector
   let mut data = Vec::new();
-  file.read_to_end(&mut data)?;
+  decoder.read_to_end(&mut data)?;
 
-  let deserialized_data = serde_pickle::from_reader(&mut &data[..])?;
-
-  OK(());
+  // Deserialize the data from the raw bytes using serde_pickle
+  let (training_data, validation_data, test_data): (
+    Vec<(Vec<Vec<f32>>, Vec<Vec<f32>>)>, 
+    Vec<(Vec<Vec<f32>>, Vec<Vec<f32>>)>, 
+    Vec<(Vec<Vec<f32>>, Vec<Vec<f32>>)>
+  ) = serde_pickle::from_reader(&mut &data[..], Default::default())?;
+  // print!("First element of first tuple: {:?}", training_data[0].0[0]);
+  Ok(())
 }
