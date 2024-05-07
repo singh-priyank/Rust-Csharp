@@ -10,7 +10,19 @@ use flate2::read::GzDecoder;
 use std::fs::File;
 use std::io::Read;
 
-pub fn load_data() -> Result<
+fn vectorized_result(x: i32) -> Vec<i32> {
+    let mut res: Vec<i32> = Vec::new();
+    for val in 0..10 {
+        if x == val {
+            res.push(1);
+        } else {
+            res.push(0);
+        }
+    }
+    res
+}
+
+fn load_data() -> Result<
     (
         (Vec<Vec<f64>>, Vec<i32>),
         (Vec<Vec<f64>>, Vec<i32>),
@@ -20,7 +32,7 @@ pub fn load_data() -> Result<
 > {
     // Open the gzipped MNIST data file
     let file = File::open(
-        "C:\\Users\\PriyankSingh\\Neural-Networks-and-Deep-Learning\\data\\file.pkl.gz",
+        "file.pkl.gz",
     )?;
     let mut decoder = GzDecoder::new(file); // Wrap the file stream with GzDecoder
 
@@ -35,4 +47,20 @@ pub fn load_data() -> Result<
     ) = serde_pickle::from_reader(&mut &data[..], Default::default())?;
 
     Ok((training_data, validation_data, test_data))
+}
+
+pub fn load_data_wrapper() -> Result<
+    (
+        (Vec<Vec<f64>>, Vec<Vec<i32>>),
+        (Vec<Vec<f64>>, Vec<Vec<i32>>),
+        (Vec<Vec<f64>>, Vec<i32>),
+    ),
+    serde_pickle::Error,
+> {
+    let (training, validation, test) =  load_data()?;
+    let mut training_data: Vec<Vec<i32>> = Vec::new();
+    for val in training.1.into_iter() {
+        training_data.push(vectorized_result(val));
+    }
+    Ok(((training.0, training_data.clone()), (validation.0, training_data.clone()), test))
 }
